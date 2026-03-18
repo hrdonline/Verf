@@ -1,0 +1,592 @@
+```html
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Портрет клиента речных круизов</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, 'Segoe UI', Arial, sans-serif;
+  background: #CDD4E2;
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  padding: 40px;
+}
+
+.slide {
+  width: 1280px;
+  background: #fff;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 16px 56px rgba(0,0,0,0.22);
+}
+
+/* ── HEADER ── */
+.hdr {
+  background: #0B1D4F;
+  padding: 20px 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.hdr-title { color: #fff; font-size: 21px; font-weight: 700; }
+.hdr-meta  { color: rgba(255,255,255,0.4); font-size: 11px;
+             letter-spacing: 0.8px; text-transform: uppercase; }
+
+/* ── BODY ── */
+.body { padding: 22px 44px 18px; }
+
+/* Section badge */
+.sec { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.sec-badge {
+  background: #0B1D4F; color: #fff;
+  font-size: 10px; font-weight: 800;
+  letter-spacing: 1.4px; text-transform: uppercase;
+  padding: 5px 14px; border-radius: 20px; white-space: nowrap;
+}
+.sec-badge.blue { background: #1D4FA8; }
+.sec-rule { flex: 1; height: 1px; background: #DDE5F0; }
+
+/* ── TOP GRID ── */
+.top-grid {
+  display: grid;
+  grid-template-columns: 290px 1fr;
+  gap: 22px;
+  margin-bottom: 20px;
+}
+
+/* Left panel */
+.left-panel { display: flex; flex-direction: column; gap: 16px; }
+
+.micro-label {
+  font-size: 10.5px; font-weight: 700; color: #8898B8;
+  letter-spacing: 0.7px; text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+/* Donut chart */
+.chart-wrap { display: flex; align-items: center; gap: 18px; }
+.donut-wrap {
+  position: relative;
+  width: 130px; height: 130px; flex-shrink: 0;
+}
+.donut-svg { width: 130px; height: 130px; transform: rotate(-90deg); }
+.donut-center {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+.donut-pct  { font-size: 22px; font-weight: 800; color: #0B1D4F; display: block; line-height: 1; }
+.donut-sub  { font-size: 10px; color: #8898B8; line-height: 1.3; display: block; }
+
+.legend { display: flex; flex-direction: column; gap: 7px; flex: 1; }
+.legend-row { display: flex; align-items: center; gap: 7px; }
+.l-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+.l-text { font-size: 11px; color: #5A6785; flex: 1; }
+.l-pct  { font-size: 11px; font-weight: 800; color: #0B1D4F; }
+
+.chart-src { font-size: 10px; color: #AAB8CC; font-style: italic; margin-top: 2px; }
+
+/* Profile card */
+.profile-card {
+  background: #F3F6FB;
+  border-radius: 10px;
+  border-left: 4px solid #1D4FA8;
+  padding: 13px 15px;
+}
+.profile-lbl {
+  font-size: 9.5px; font-weight: 800; color: #1D4FA8;
+  letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px;
+}
+.profile-txt { font-size: 12px; color: #3A4A6A; line-height: 1.6; }
+.profile-txt strong { color: #0B1D4F; font-weight: 700; }
+
+/* ── JTBD TABLE ── */
+.jtbd-wrap { display: flex; flex-direction: column; }
+
+.jtbd {
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #DDE5F0;
+  flex: 1;
+}
+.jtbd-hdr {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  background: #0B1D4F;
+}
+.jtbd-hc {
+  padding: 11px 18px;
+  font-size: 11px; font-weight: 800;
+  color: rgba(255,255,255,0.88);
+  letter-spacing: 0.5px;
+  display: flex; align-items: center; gap: 6px;
+}
+.jtbd-hc:not(:last-child) { border-right: 1px solid rgba(255,255,255,0.1); }
+.jtbd-hc-icon { font-size: 13px; opacity: 0.7; }
+
+.jtbd-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  border-bottom: 1px solid #E8EEF8;
+}
+.jtbd-row:last-child { border-bottom: none; }
+.jtbd-row:nth-child(odd) { background: #F8FAFD; }
+.jtbd-row:nth-child(even) { background: #fff; }
+
+.jtbd-cell {
+  padding: 10px 18px;
+  font-size: 11.5px; color: #3A4A6A;
+  line-height: 1.5;
+}
+.jtbd-cell:not(:last-child) { border-right: 1px solid #E8EEF8; }
+.jtbd-cell.want   { color: #0B1D4F; }
+.jtbd-cell.result {
+  font-weight: 700; color: #1D4FA8;
+  display: flex; align-items: center; gap: 5px;
+}
+.result-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #1D4FA8; flex-shrink: 0;
+}
+
+/* ── PERSONAS ── */
+.personas-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+}
+
+.pcard {
+  border-radius: 10px;
+  border: 1px solid #DDE5F0;
+  overflow: hidden;
+  display: flex; flex-direction: column;
+}
+
+.pcard-head {
+  padding: 12px 14px 10px;
+  display: flex; align-items: center; gap: 9px;
+}
+.pcard-icon {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; flex-shrink: 0;
+}
+.pcard-name {
+  font-size: 12px; font-weight: 700; color: #0B1D4F;
+  line-height: 1.3;
+}
+
+.pcard-body { padding: 0 14px 12px; display: flex; flex-direction: column; gap: 8px; }
+
+.pcard-demo {
+  background: rgba(255,255,255,0.7);
+  border-radius: 7px;
+  padding: 7px 10px;
+  display: flex; flex-direction: column; gap: 2px;
+}
+.pcard-demo p { font-size: 10.5px; color: #5A6A88; line-height: 1.4; }
+.pcard-demo p strong { color: #0B1D4F; font-weight: 700; }
+
+.pblock-title {
+  font-size: 9px; font-weight: 800; color: #1D4FA8;
+  letter-spacing: 0.8px; text-transform: uppercase;
+  margin-bottom: 3px;
+}
+
+.plist { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+.plist li {
+  font-size: 10.5px; color: #5A6A88; line-height: 1.45;
+  padding-left: 10px; position: relative;
+}
+.plist li::before {
+  content: '·';
+  position: absolute; left: 0;
+  font-size: 15px; line-height: 1;
+}
+
+.pdriver {
+  background: rgba(255,255,255,0.7);
+  border-radius: 7px;
+  padding: 7px 10px;
+  font-size: 10.5px; color: #0B1D4F; line-height: 1.5;
+  border-left: 3px solid currentColor;
+}
+
+.pbarrier {
+  background: #FFF5F2;
+  border-radius: 7px;
+  padding: 7px 10px;
+}
+.pbarrier .btitle {
+  font-size: 9px; font-weight: 800;
+  letter-spacing: 0.8px; text-transform: uppercase;
+  margin-bottom: 3px;
+  color: #C04A20;
+}
+.pbarrier ul { list-style: none; }
+.pbarrier ul li {
+  font-size: 10px; color: #9A4A30; line-height: 1.45;
+  padding-left: 12px; position: relative;
+}
+.pbarrier ul li::before {
+  content: '×';
+  position: absolute; left: 0;
+  font-size: 10px; color: #C04A20;
+}
+
+/* Persona color themes */
+.t1 .pcard-head { background: #EEF3FB; border-top: 3px solid #1D4FA8; }
+.t1 .pcard-icon { background: #D8E6F8; }
+.t1 .plist li::before { color: #1D4FA8; }
+.t1 .pdriver { border-color: #1D4FA8; }
+
+.t2 .pcard-head { background: #EEF3FB; border-top: 3px solid #4A7DD4; }
+.t2 .pcard-icon { background: #DCE9F8; }
+.t2 .plist li::before { color: #4A7DD4; }
+.t2 .pdriver { border-color: #4A7DD4; }
+.t2 .pblock-title { color: #4A7DD4; }
+
+.t3 .pcard-head { background: #EDF7F2; border-top: 3px solid #2DA87A; }
+.t3 .pcard-icon { background: #D0EDE2; }
+.t3 .plist li::before { color: #2DA87A; }
+.t3 .pdriver { border-color: #2DA87A; }
+.t3 .pblock-title { color: #2DA87A; }
+
+.t4 .pcard-head { background: #FEF8EC; border-top: 3px solid #D4920A; }
+.t4 .pcard-icon { background: #FAE9BA; }
+.t4 .plist li::before { color: #D4920A; }
+.t4 .pdriver { border-color: #D4920A; }
+.t4 .pblock-title { color: #D4920A; }
+
+.t5 .pcard-head { background: #F4F0FC; border-top: 3px solid #7B4FD4; }
+.t5 .pcard-icon { background: #E2D6F7; }
+.t5 .plist li::before { color: #7B4FD4; }
+.t5 .pdriver { border-color: #7B4FD4; }
+.t5 .pblock-title { color: #7B4FD4; }
+
+/* ── FOOTER ── */
+.footer {
+  padding: 8px 44px 13px;
+  border-top: 1px solid #EEF2F8;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.footer span { font-size: 11px; color: #8898B8; font-weight: 500; }
+</style>
+</head>
+<body>
+<div class="slide">
+
+  <!-- HEADER -->
+  <div class="hdr">
+    <span class="hdr-title">Портрет клиента речных круизов</span>
+    <span class="hdr-meta">Московская верфь · Март 2026</span>
+  </div>
+
+  <div class="body">
+
+    <!-- SECTION 1 -->
+    <div class="sec">
+      <div class="sec-badge">Сегментация и мотивы</div>
+      <div class="sec-rule"></div>
+    </div>
+
+    <!-- TOP GRID -->
+    <div class="top-grid">
+
+      <!-- LEFT -->
+      <div class="left-panel">
+
+        <div>
+          <div class="micro-label">Возрастная структура</div>
+          <div class="chart-wrap">
+
+            <!-- SVG Donut -->
+            <div class="donut-wrap">
+              <svg class="donut-svg" viewBox="0 0 130 130">
+                <circle cx="65" cy="65" r="52" fill="none" stroke="#93B9E8"
+                        stroke-width="20" stroke-dasharray="326.7 0"/>
+                <circle cx="65" cy="65" r="52" fill="none" stroke="#4A7DD4"
+                        stroke-width="20"
+                        stroke-dasharray="75.4 251.3"
+                        stroke-dashoffset="-326.7"/>
+                <circle cx="65" cy="65" r="52" fill="none" stroke="#1D4FA8"
+                        stroke-width="20"
+                        stroke-dasharray="100.5 201.2"
+                        stroke-dashoffset="-251.3"/>
+                <circle cx="65" cy="65" r="52" fill="none" stroke="#0B1D4F"
+                        stroke-width="20"
+                        stroke-dasharray="209.3 117.9"
+                        stroke-dashoffset="-150.8"/>
+              </svg>
+              <div class="donut-center">
+                <span class="donut-pct">65%</span>
+                <span class="donut-sub">50+<br>лет</span>
+              </div>
+            </div>
+
+            <div class="legend">
+              <div class="legend-row">
+                <div class="l-dot" style="background:#0B1D4F"></div>
+                <span class="l-text">50+ лет</span>
+                <span class="l-pct">65%</span>
+              </div>
+              <div class="legend-row">
+                <div class="l-dot" style="background:#1D4FA8"></div>
+                <span class="l-text">40–49 лет</span>
+                <span class="l-pct">15%</span>
+              </div>
+              <div class="legend-row">
+                <div class="l-dot" style="background:#4A7DD4"></div>
+                <span class="l-text">30–39 лет</span>
+                <span class="l-pct">12%</span>
+              </div>
+              <div class="legend-row">
+                <div class="l-dot" style="background:#93B9E8"></div>
+                <span class="l-text">25–30 лет</span>
+                <span class="l-pct">8%</span>
+              </div>
+            </div>
+          </div>
+          <p class="chart-src">* По данным круизного оператора «Водоходъ»</p>
+        </div>
+
+        <div class="profile-card">
+          <div class="profile-lbl">Основной профиль клиента</div>
+          <div class="profile-txt">
+            Пары и семьи <strong>40–65 лет</strong>, заинтересованные в
+            <strong>комфортном, познавательном</strong> и организованном отдыхе
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: JTBD -->
+      <div class="jtbd-wrap">
+        <div class="micro-label">JTBD — Jobs To Be Done&nbsp;&nbsp;(мотивации клиентов)</div>
+        <div class="jtbd">
+          <div class="jtbd-hdr">
+            <div class="jtbd-hc"><span class="jtbd-hc-icon">💬</span> Хочу</div>
+            <div class="jtbd-hc"><span class="jtbd-hc-icon">🎯</span> Чтобы</div>
+            <div class="jtbd-hc"><span class="jtbd-hc-icon">✅</span> Поэтому выбираю</div>
+          </div>
+          <div class="jtbd-row">
+            <div class="jtbd-cell want">Отдохнуть без сложной логистики</div>
+            <div class="jtbd-cell">Не заниматься организацией поездки</div>
+            <div class="jtbd-cell result"><span class="result-dot"></span>Речной круиз</div>
+          </div>
+          <div class="jtbd-row">
+            <div class="jtbd-cell want">Увидеть несколько городов</div>
+            <div class="jtbd-cell">Совместить отдых и экскурсии</div>
+            <div class="jtbd-cell result"><span class="result-dot"></span>Экскурсионный круиз</div>
+          </div>
+          <div class="jtbd-row">
+            <div class="jtbd-cell want">Спокойно отдохнуть</div>
+            <div class="jtbd-cell">Восстановиться и сменить темп</div>
+            <div class="jtbd-cell result"><span class="result-dot"></span>Спокойный речной круиз</div>
+          </div>
+          <div class="jtbd-row">
+            <div class="jtbd-cell want">Поехать всей семьёй</div>
+            <div class="jtbd-cell">Всем поколениям было интересно</div>
+            <div class="jtbd-cell result"><span class="result-dot"></span>Семейный круиз</div>
+          </div>
+          <div class="jtbd-row">
+            <div class="jtbd-cell want">Получить высокий уровень сервиса</div>
+            <div class="jtbd-cell">Чувствовать статус и комфорт</div>
+            <div class="jtbd-cell result"><span class="result-dot"></span>Премиальный круиз</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SECTION 2 -->
+    <div class="sec">
+      <div class="sec-badge blue">Персоны клиентов</div>
+      <div class="sec-rule"></div>
+    </div>
+
+    <!-- PERSONAS -->
+    <div class="personas-grid">
+
+      <!-- 1: Комфорт -->
+      <div class="pcard t1">
+        <div class="pcard-head">
+          <div class="pcard-icon">🧳</div>
+          <div class="pcard-name">Комфорт без логистики</div>
+        </div>
+        <div class="pcard-body">
+          <div class="pcard-demo">
+            <p><strong>Пара:</strong> 50–56 лет</p>
+            <p><strong>Доход:</strong> выше среднего</p>
+          </div>
+          <div>
+            <div class="pblock-title">Что важно</div>
+            <ul class="plist">
+              <li>Отдых «всё включено»</li>
+              <li>Понятная логистика</li>
+              <li>Удобные каюты</li>
+              <li>Организованные экскурсии</li>
+            </ul>
+          </div>
+          <div class="pdriver" style="color:#1D4FA8;">
+            Комфортный отдых без необходимости самостоятельно планировать маршрут
+          </div>
+          <div class="pbarrier">
+            <div class="btitle">Барьеры</div>
+            <ul>
+              <li>Старые суда</li>
+              <li>Слабый сервис</li>
+              <li>Медицина на борту</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2: Культурный -->
+      <div class="pcard t2">
+        <div class="pcard-head">
+          <div class="pcard-icon">🏛️</div>
+          <div class="pcard-name">Культурный отдых</div>
+        </div>
+        <div class="pcard-body">
+          <div class="pcard-demo">
+            <p><strong>Женщина:</strong> 60 лет</p>
+            <p><strong>Доход:</strong> средний</p>
+          </div>
+          <div>
+            <div class="pblock-title">Что важно</div>
+            <ul class="plist">
+              <li>Познавательный отдых</li>
+              <li>Исторические города</li>
+              <li>Экскурсионная программа</li>
+            </ul>
+          </div>
+          <div class="pdriver" style="color:#4A7DD4;">
+            Возможность посетить несколько городов с культурной программой
+          </div>
+          <div class="pbarrier">
+            <div class="btitle">Барьеры</div>
+            <ul>
+              <li>Короткие остановки</li>
+              <li>Слабая экскурсионная программа</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3: Тихий -->
+      <div class="pcard t3">
+        <div class="pcard-head">
+          <div class="pcard-icon">🌿</div>
+          <div class="pcard-name">Тихий отдых</div>
+        </div>
+        <div class="pcard-body">
+          <div class="pcard-demo">
+            <p><strong>Женщина:</strong> 48 лет</p>
+            <p><strong>Доход:</strong> выше среднего</p>
+          </div>
+          <div>
+            <div class="pblock-title">Что важно</div>
+            <ul class="plist">
+              <li>Спокойная атмосфера</li>
+              <li>Природные маршруты</li>
+              <li>Медленный темп путешествия</li>
+            </ul>
+          </div>
+          <div class="pdriver" style="color:#2DA87A;">
+            Спокойный отдых и возможность перезагрузки
+          </div>
+          <div class="pbarrier">
+            <div class="btitle">Барьеры</div>
+            <ul>
+              <li>Шумные развлечения</li>
+              <li>Ограниченные зоны тишины</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4: Семейный -->
+      <div class="pcard t4">
+        <div class="pcard-head">
+          <div class="pcard-icon">👨‍👩‍👧</div>
+          <div class="pcard-name">Семейный отдых</div>
+        </div>
+        <div class="pcard-body">
+          <div class="pcard-demo">
+            <p><strong>Семья:</strong> 35–65 лет + дети</p>
+            <p><strong>Доход:</strong> средний</p>
+          </div>
+          <div>
+            <div class="pblock-title">Что важно</div>
+            <ul class="plist">
+              <li>Отдых для поколений</li>
+              <li>Безопасность</li>
+              <li>Разные развлечения</li>
+            </ul>
+          </div>
+          <div class="pdriver" style="color:#D4920A;">
+            Возможность путешествовать всей семьёй
+          </div>
+          <div class="pbarrier">
+            <div class="btitle">Барьеры</div>
+            <ul>
+              <li>Маленькие каюты</li>
+              <li>Нет детских программ</li>
+              <li>Ограниченные развлечения</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5: Статусный -->
+      <div class="pcard t5">
+        <div class="pcard-head">
+          <div class="pcard-icon">💎</div>
+          <div class="pcard-name">Статусный отдых</div>
+        </div>
+        <div class="pcard-body">
+          <div class="pcard-demo">
+            <p><strong>Мужчина:</strong> 45 лет</p>
+            <p><strong>Доход:</strong> высокий</p>
+          </div>
+          <div>
+            <div class="pblock-title">Что важно</div>
+            <ul class="plist">
+              <li>Приватность</li>
+              <li>Высокий уровень сервиса</li>
+              <li>Хорошая кухня · новые суда</li>
+            </ul>
+          </div>
+          <div class="pdriver" style="color:#7B4FD4;">
+            Спокойный отдых и возможность перезагрузки
+          </div>
+          <div class="pbarrier">
+            <div class="btitle">Барьеры</div>
+            <ul>
+              <li>Старые суда</li>
+              <li>Шумные развлечения</li>
+              <li>Нет хорошей кухни</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <span>Московская верфь</span>
+    <span>05</span>
+  </div>
+
+</div>
+</body>
+</html>
+``
